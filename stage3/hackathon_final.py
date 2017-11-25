@@ -26,7 +26,7 @@ datafile = "eeg.dat"
 buf = []
 ref = 0
 FSM_state = 0  # [0 - "education", 1 - "work"]
-CMD = 0  # [0 - "left", 1 - "right"]
+CMD = 0 #[0 - "up", 1 - "down", 2 - "rotate", 3 - "forward"]
 run_state = False  # run/stop state
 # массив FiFo
 valuechannel1 = deque([])
@@ -36,7 +36,7 @@ learnData = []
 education = []
 break_flag = True
 # Нейронная сеть
-net = buildNetwork(64*3, 50, 10, 2, bias=True, hiddenclass=SigmoidLayer)
+net = buildNetwork(64*3, 60, 12, 4, bias=True, hiddenclass=SigmoidLayer)
 
 # режим работы
 state = 1 	#Данные поступают из электроэнцефалографа
@@ -450,11 +450,11 @@ def constructDataset(name, learnData):
 
     """
     # Вычисляем размерность входных данных
-    dimIn = len(learnData[0][0])
-    dimOut = len(learnData[0][1])
+     dimIn = len(learnData[0][1][2][3])#updated
+    dimOut = len (learnData[0][1][2][3])#updated
     ds = SupervisedDataSet(dimIn, dimOut)
     for d in learnData:
-        ds.addSample(d[0], d[1])
+        ds.addSample(d[0], d[1], d[2], d[3])
     return ds
 
 
@@ -544,140 +544,293 @@ def lets_start():
             root.update()
             time.sleep(3)
 
-            for i in range(3):
-                # show image
-                background_image = Tk.PhotoImage(file="left.png")
-                background_label = Tk.Label(root, image=background_image)
-                background_label.place(x=0, y=0, relwidth=1, relheight=1)
-                root.wm_geometry("1000x650+20+40")
-                root.title('Go read your brain')
-                root.update()
-                receive_data_from_eeg()
-                # Start educate correct left
-                #
-                #
-                education.append((learnData, [1, 0]))
+           
+			for i in range(10): 
 
-                # show image
-                background_image = Tk.PhotoImage(file="wait.png")
-                background_label = Tk.Label(root, image=background_image)
-                background_label.place(x=0, y=0, relwidth=1, relheight=1)
-                root.wm_geometry("1000x650+20+40")
-                root.title('Go read your brain')
-                root.update()
-                time.sleep(3)
+				#show image
+				background_image=Tk.PhotoImage(file="up.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				receive_data_from_eeg()
+				#Start educate correct left
+				#
+				#
+				education.append((learnData,[1,0,0,0]))
+				
 
-                # show image
-                background_image = Tk.PhotoImage(file="right.png")
-                background_label = Tk.Label(root, image=background_image)
-                background_label.place(x=0, y=0, relwidth=1, relheight=1)
-                root.wm_geometry("1000x650+20+40")
-                root.title('Go read your brain')
-                root.update()
-                receive_data_from_eeg()
-                # Start educate incorrect left
-                #
-                #
+				#show image
+				background_image=Tk.PhotoImage(file="wait.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				time.sleep(3)
+#
+				#show image
+				background_image=Tk.PhotoImage(file="nothing.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				receive_data_from_eeg()
+				#Start educate incorrect left
+				#
+				#
 
-                education.append((learnData, [0, 0]))
+				education.append((learnData,[0,0,0,0]))
 
-                # show image
-                background_image = Tk.PhotoImage(file="wait.png")
-                background_label = Tk.Label(root, image=background_image)
-                background_label.place(x=0, y=0, relwidth=1, relheight=1)
-                root.wm_geometry("1000x650+20+40")
-                root.title('Go read your brain')
-                root.update()
-                time.sleep(3)
+				#show image
+				background_image=Tk.PhotoImage(file="wait.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				time.sleep(3)
 
-            # show image
-            background_image = Tk.PhotoImage(file="edu_right.png")
-            background_label = Tk.Label(root, image=background_image)
-            background_label.place(x=0, y=0, relwidth=1, relheight=1)
-            root.wm_geometry("1000x650+20+40")
-            root.title('Go read your brain')
-            root.update()
-            time.sleep(5)
+			#show image
+			background_image=Tk.PhotoImage(file="edu_down.png")
+			background_label = Tk.Label(root, image=background_image)
+			background_label.place(x=0, y=0, relwidth=1, relheight=1)
+			root.wm_geometry("1000x650+20+40")
+			root.title('Go read your brain')
+			root.update()
+			time.sleep(5)
 
-            CMD == 1  # Educate CMD Left
-            # show image
-            background_image = Tk.PhotoImage(file="wait.png")
-            background_label = Tk.Label(root, image=background_image)
-            background_label.place(x=0, y=0, relwidth=1, relheight=1)
-            root.wm_geometry("1000x650+20+40")
-            root.title('Go read your brain')
-            root.update()
-            time.sleep(3)
+			CMD==1 #Educate CMD Left
+			#show image
+			background_image=Tk.PhotoImage(file="wait.png")
+			background_label = Tk.Label(root, image=background_image)
+			background_label.place(x=0, y=0, relwidth=1, relheight=1)
+			root.wm_geometry("1000x650+20+40")
+			root.title('Go read your brain')
+			root.update()
+			time.sleep(3)
 
-            for i in range(3):
-                # show image
-                background_image = Tk.PhotoImage(file="right.png")
-                background_label = Tk.Label(root, image=background_image)
-                background_label.place(x=0, y=0, relwidth=1, relheight=1)
-                root.wm_geometry("1000x650+20+40")
-                root.title('Go read your brain')
-                root.update()
-                receive_data_from_eeg()
-                # Start educate correct right
-                #
-                #
+			for i in range(10): 
 
-                education.append((learnData, [0, 1]))
+				#show image
+				background_image=Tk.PhotoImage(file="down.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				receive_data_from_eeg()
+				#Start educate correct right
+				#
+				#
 
-                # show image
-                background_image = Tk.PhotoImage(file="wait.png")
-                background_label = Tk.Label(root, image=background_image)
-                background_label.place(x=0, y=0, relwidth=1, relheight=1)
-                root.wm_geometry("1000x650+20+40")
-                root.title('Go read your brain')
-                root.update()
-                time.sleep(3)
+				education.append((learnData,[0,1,0,0]))
 
-                # show image
-                background_image = Tk.PhotoImage(file="left.png")
-                background_label = Tk.Label(root, image=background_image)
-                background_label.place(x=0, y=0, relwidth=1, relheight=1)
-                root.wm_geometry("1000x650+20+40")
-                root.title('Go read your brain')
-                root.update()
-                receive_data_from_eeg()
-                # Start educate incorrect right
-                #
-                #
 
-                education.append((learnData, [0, 0]))
+				#show image
+				background_image=Tk.PhotoImage(file="wait.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				time.sleep(3)
 
-                # show image
-                background_image = Tk.PhotoImage(file="wait.png")
-                background_label = Tk.Label(root, image=background_image)
-                background_label.place(x=0, y=0, relwidth=1, relheight=1)
-                root.wm_geometry("1000x650+20+40")
-                root.title('Go read your brain')
-                root.update()
-                time.sleep(3)
+				#show image
+				background_image=Tk.PhotoImage(file="nothing.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				receive_data_from_eeg()
+				#Start educate incorrect right
+				#
+				#
 
-            # Формирование обучающей выборки
-            # print education
-            # Данные для обучения data поступают от ЭЭГ в описанном выше формате - списке обучающих пар
-            ds = constructDataset('data', education)
-            # Запуск 1 полной эпохи обучения
-            (trained_net, err) = trainNetwork(n, ds)
+				education.append((learnData,[0,0,0,0]))
 
-            background_image = Tk.PhotoImage(file="work.png")
-            background_label = Tk.Label(root, image=background_image)
-            background_label.place(x=0, y=0, relwidth=1, relheight=1)
-            root.wm_geometry("1000x650+20+40")
-            root.title('Go read your brain')
-            root.update()
-            FSM_state = 1  # Work, cmd = left
-            time.sleep(3)
 
+				#show image
+				background_image=Tk.PhotoImage(file="wait.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				time.sleep(3)
+
+
+
+#show image
+			background_image=Tk.PhotoImage(file="edu_rotate.png")
+			background_label = Tk.Label(root, image=background_image)
+			background_label.place(x=0, y=0, relwidth=1, relheight=1)
+			root.wm_geometry("1000x650+20+40")
+			root.title('Go read your brain')
+			root.update()
+			time.sleep(5)
+
+			CMD==2 #Educate CMD Left
+			#show image
+			background_image=Tk.PhotoImage(file="wait.png")
+			background_label = Tk.Label(root, image=background_image)
+			background_label.place(x=0, y=0, relwidth=1, relheight=1)
+			root.wm_geometry("1000x650+20+40")
+			root.title('Go read your brain')
+			root.update()
+			time.sleep(3)
+
+			for i in range(10): 
+
+				#show image
+				background_image=Tk.PhotoImage(file="rotate.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				receive_data_from_eeg()
+				#Start educate correct right
+				#
+				#
+
+				education.append((learnData,[0,0,1,0]))
+
+
+				#show image
+				background_image=Tk.PhotoImage(file="wait.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				time.sleep(3)
+
+				#show image
+				background_image=Tk.PhotoImage(file="nothing.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				receive_data_from_eeg()
+				#Start educate incorrect right
+				#
+				#
+
+				education.append((learnData,[0,0,0,0]))
+
+
+				#show image
+				background_image=Tk.PhotoImage(file="wait.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				time.sleep(3)
+
+
+
+#show image
+			background_image=Tk.PhotoImage(file="edu_forward.png")
+			background_label = Tk.Label(root, image=background_image)
+			background_label.place(x=0, y=0, relwidth=1, relheight=1)
+			root.wm_geometry("1000x650+20+40")
+			root.title('Go read your brain')
+			root.update()
+			time.sleep(5)
+
+			CMD==3 #Educate CMD Left
+			#show image
+			background_image=Tk.PhotoImage(file="wait.png")
+			background_label = Tk.Label(root, image=background_image)
+			background_label.place(x=0, y=0, relwidth=1, relheight=1)
+			root.wm_geometry("1000x650+20+40")
+			root.title('Go read your brain')
+			root.update()
+			time.sleep(3)
+
+			for i in range(10): 
+
+				#show image
+				background_image=Tk.PhotoImage(file="forward.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				receive_data_from_eeg()
+				#Start educate correct right
+				#
+				#
+
+				education.append((learnData,[0,0,0,1]))
+
+
+				#show image
+				background_image=Tk.PhotoImage(file="wait.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				time.sleep(3)
+
+				#show image
+				background_image=Tk.PhotoImage(file="nothing.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				receive_data_from_eeg()
+				#Start educate incorrect right
+				#
+				#
+
+				education.append((learnData,[0,0,0,0]))
+
+
+				#show image
+				background_image=Tk.PhotoImage(file="wait.png")
+				background_label = Tk.Label(root, image=background_image)
+				background_label.place(x=0, y=0, relwidth=1, relheight=1)
+				root.wm_geometry("1000x650+20+40")
+				root.title('Go read your brain')
+				root.update()
+				time.sleep(3)
+
+
+
+			# Формирование обучающей выборки
+			#print education			
+			# Данные для обучения data поступают от ЭЭГ в описанном выше формате - списке обучающих пар
+			ds = constructDataset('data', education)
+			# Запуск 1 полной эпохи обучения
+			(trained_net, err) = trainNetwork (n, ds)
+
+			background_image=Tk.PhotoImage(file="work.png")
+			background_label = Tk.Label(root, image=background_image)
+			background_label.place(x=0, y=0, relwidth=1, relheight=1)
+			root.wm_geometry("1000x650+20+40")
+			root.title('Go read your brain')
+			root.update()
+			FSM_state = 1 #Work, cmd = left	
+			time.sleep(3)
 
         else:  # Work
             if CMD == 1:
-                background_image = Tk.PhotoImage(file="left.png")
-            else:
-                background_image = Tk.PhotoImage(file="right.png")
+				background_image=Tk.PhotoImage(file="up.png")
+			elif CMD == 2:
+				background_image=Tk.PhotoImage(file="down.png")
+			elif CMD == 3:
+				background_image=Tk.PhotoImage(file="rotate.png")
+			else:
+				background_image=Tk.PhotoImage(file="forward.png")
             background_label = Tk.Label(root, image=background_image)
             background_label.place(x=0, y=0, relwidth=1, relheight=1)
             root.wm_geometry("1000x650+20+40")
@@ -693,14 +846,10 @@ def lets_start():
 
             print recognition
 
-	    if recognition[0] - recognition[1] >= 0.5:
-		print "<=="
-		write_pack_fifo_buf_3D("WD__")
-	    elif recognition[1] - recognition[0] >= 0.5:
-		print "==>"
-		write_pack_fifo_buf_3D("WA__")
-	    else:
-		print "?"
+        print "results: " + "recognition[0]:" + recognition[0] \
+				+ "recognition[1]:" + recognition[1]\
+				+ "recognition[2]:" + recognition[2]\
+				+ "recognition[3]:" + recognition[3]
 	    write_pack_fifo_buf_3D("____")
 
             background_image = Tk.PhotoImage(file="work.png")
@@ -711,10 +860,7 @@ def lets_start():
             root.update()
             FSM_state = 1  # Work, cmd = left
             time.sleep(3)
-            if CMD == 1:
-                CMD = 0
-            else:
-                CMD = 1
+            CMD = (CMD + 1) % 4
     ser.close()
 
 

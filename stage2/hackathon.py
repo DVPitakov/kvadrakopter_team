@@ -32,7 +32,7 @@ valuechannel3 = deque([])
 learnData = []
 education = []
 #Нейронная сеть
-net = buildNetwork(64*3, 20, 6, 4, bias=True, hiddenclass=SigmoidLayer)
+net = buildNetwork(64*3, 60, 12, 4, bias=True, hiddenclass=SigmoidLayer)
 
 
 
@@ -512,7 +512,7 @@ def lets_start():
 			root.update()
 			time.sleep(5)
 
-			CMD==1 #Educate CMD Left
+			CMD==2 #Educate CMD Left
 			#show image
 			background_image=Tk.PhotoImage(file="wait.png")
 			background_label = Tk.Label(root, image=background_image)
@@ -583,7 +583,7 @@ def lets_start():
 			root.update()
 			time.sleep(5)
 
-			CMD==1 #Educate CMD Left
+			CMD==3 #Educate CMD Left
 			#show image
 			background_image=Tk.PhotoImage(file="wait.png")
 			background_label = Tk.Label(root, image=background_image)

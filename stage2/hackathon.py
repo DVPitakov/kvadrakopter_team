@@ -318,11 +318,11 @@ def constructDataset (name, learnData):
 
     """
     # Вычисляем размерность входных данных
-    dimIn = len(learnData[0][1][2][3])#updated
-    dimOut = len (learnData[0][1][2][3])#updated
+    dimIn = len(learnData[0][0])#updated
+    dimOut = len (learnData[0][1])#updated
     ds = SupervisedDataSet(dimIn, dimOut)
     for d in learnData:
-        ds.addSample(d[0], d[1], d[2], d[3])#udpated
+        ds.addSample(d[0], d[1])#udpated
     return ds
 
 def trainNetwork (net, trainData):
@@ -663,11 +663,11 @@ def lets_start():
 
 	
 		else:			#Work
-			if CMD == 1:
+			if CMD == 0:
 				background_image=Tk.PhotoImage(file="up.png")
-			elif CMD == 2:
+			elif CMD == 1:
 				background_image=Tk.PhotoImage(file="down.png")
-			elif CMD == 3:
+			elif CMD == 2:
 				background_image=Tk.PhotoImage(file="rotate.png")
 			else:
 				background_image=Tk.PhotoImage(file="forward.png")

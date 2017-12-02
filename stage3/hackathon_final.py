@@ -269,7 +269,7 @@ def buf_read(count):
 
 def get(count):
     if state:
-	print ser.read(count)
+    print ser.read(count)
         return data
     else:
         return buf_read(count)
@@ -373,7 +373,7 @@ def clear_channels():
     valuechannel3.clear()
 
 def get_packets():
-	return len(valuechannel1)
+    return len(valuechannel1)
 
 def receive_data_from_eeg():
 	global break_flag
@@ -396,10 +396,10 @@ def receive_data_from_eeg():
 		time.sleep(0.02) # Задержка 20 мс
 
         for i in range(4):
-        	for j in range(16):
-			learnData += valuechannel1[i][j]
-			learnData += valuechannel2[i][j]
-			learnData += valuechannel3[i][j]
+            for j in range(16):
+                learnData += valuechannel1[i][j]
+                learnData += valuechannel2[i][j]
+                learnData += valuechannel3[i][j]
 
  
 
@@ -450,7 +450,7 @@ def constructDataset(name, learnData):
 
     """
     # Вычисляем размерность входных данных
-     dimIn = len(learnData[0][1][2][3])#updated
+    dimIn = len(learnData[0][1][2][3])#updated
     dimOut = len (learnData[0][1][2][3])#updated
     ds = SupervisedDataSet(dimIn, dimOut)
     for d in learnData:
@@ -545,27 +545,23 @@ def lets_start():
             time.sleep(3)
 
            
-			for i in range(10): 
+            for i in range(10):
 
-				#show image
+                #show image
 				background_image=Tk.PhotoImage(file="up.png")
-				background_label = Tk.Label(root, image=background_image)
-				background_label.place(x=0, y=0, relwidth=1, relheight=1)
-				root.wm_geometry("1000x650+20+40")
-				root.title('Go read your brain')
-				root.update()
-				receive_data_from_eeg()
-				#Start educate correct left
-				#
-				#
-				education.append((learnData,[1,0,0,0]))
+                background_label = Tk.Label(root, image=background_image)
+                background_label.place(x=0, y=0, relwidth=1, relheight=1)
+                root.wm_geometry("1000x650+20+40")
+                root.title('Go read your brain')
+                root.update()
+                receive_data_from_eeg()
+                education.append((learnData,[1,0,0,0]))
 				
 
-				#show image
-				background_image=Tk.PhotoImage(file="wait.png")
-				background_label = Tk.Label(root, image=background_image)
-				background_label.place(x=0, y=0, relwidth=1, relheight=1)
-				root.wm_geometry("1000x650+20+40")
+                background_image=Tk.PhotoImage(file="wait.png")
+                background_label = Tk.Label(root, image=background_image)
+                background_label.place(x=0, y=0, relwidth=1, relheight=1)
+                root.wm_geometry("1000x650+20+40")
 				root.title('Go read your brain')
 				root.update()
 				time.sleep(3)
@@ -824,13 +820,13 @@ def lets_start():
 
         else:  # Work
             if CMD == 1:
-				background_image=Tk.PhotoImage(file="up.png")
-			elif CMD == 2:
-				background_image=Tk.PhotoImage(file="down.png")
-			elif CMD == 3:
-				background_image=Tk.PhotoImage(file="rotate.png")
-			else:
-				background_image=Tk.PhotoImage(file="forward.png")
+                background_image=Tk.PhotoImage(file="up.png")
+            elif CMD == 2:
+                background_image=Tk.PhotoImage(file="down.png")
+            elif CMD == 3:
+                background_image=Tk.PhotoImage(file="rotate.png")
+            else:
+                background_image=Tk.PhotoImage(file="forward.png")
             background_label = Tk.Label(root, image=background_image)
             background_label.place(x=0, y=0, relwidth=1, relheight=1)
             root.wm_geometry("1000x650+20+40")
@@ -846,11 +842,8 @@ def lets_start():
 
             print recognition
 
-        print "results: " + "recognition[0]:" + recognition[0] \
-				+ "recognition[1]:" + recognition[1]\
-				+ "recognition[2]:" + recognition[2]\
-				+ "recognition[3]:" + recognition[3]
-	    write_pack_fifo_buf_3D("____")
+        print "results: " + "recognition[0]:" + recognition[0] + "recognition[1]:" + recognition[1] + "recognition[2]:" + recognition[2] + "recognition[3]:" + recognition[3]
+        write_pack_fifo_buf_3D("____")
 
             background_image = Tk.PhotoImage(file="work.png")
             background_label = Tk.Label(root, image=background_image)
